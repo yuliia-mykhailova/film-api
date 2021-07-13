@@ -40,6 +40,13 @@ class Genre(db.Model):
         super(Genre, self).__init__(**kwargs)
 
 
+FilmGenre = db.Table(
+    "FilmGenre",
+    db.Column("film_id", db.Integer, db.ForeignKey("film.film_id"), primary_key=True),
+    db.Column("genre_id", db.Integer, db.ForeignKey("genre.genre_id"), primary_key=True),
+)
+
+
 class Film(db.Model):
     __tablename__ = "film"
 
@@ -50,17 +57,10 @@ class Film(db.Model):
     rate = db.Column(db.Numeric(2, 2), nullable=False)
     poster = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
-    director_id = db.Column(db.Integer, db.ForeignKey("director.director_id"), nullable=True)
+    user = db.relationship("User", backref="user_movies")
+    genres = db.relationship(
+        "Genre", secondary=FilmGenre, backref="film_genre"
+    )
     
     def __init__(self, **kwargs):
         super(Film, self).__init__(**kwargs)
-
-
-class FilmGenre(db.Model):
-    __tablename__ = "film_genre"
-
-    film_id = db.Column(db.Integer,  db.ForeignKey("film.film_id"), primary_key=True)
-    genre_id = db.Column(db.Integer, db.ForeignKey("genre.genre_id"), primary_key=True)
-    
-    def __init__(self, **kwargs):
-        super(FilmGenre, self).__init__(**kwargs)
