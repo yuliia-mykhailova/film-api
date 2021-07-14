@@ -1,6 +1,7 @@
 from flask.cli import FlaskGroup
 
 from app import app, db
+from app.models import User
 
 
 cli = FlaskGroup(app)
@@ -13,5 +14,11 @@ def create_db():
     db.session.commit()
 
 
-if __name__ == '__main__':
+@cli.command("seed_db")
+def seed_db():
+    db.session.add(User(first_name='fff', last_name='ggg', email='michael@mherman.org', password='1234'))
+    db.session.commit()
+
+
+if __name__ == "__main__":
     cli()

@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if "$DATABASE" = "postgres";
+if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."
 
@@ -11,6 +11,6 @@ then
     echo "PostgreSQL started"
 fi
 
-python app.py create_db
+python manage.py create_db
 
 exec "$@"

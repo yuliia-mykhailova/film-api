@@ -13,4 +13,4 @@ COPY app.py .
 COPY /app /app
 COPY entrypoint.sh .
 
-ENTRYPOINT ["bash", "entrypoint.sh"]
+ENTRYPOINT ["/usr/src/entrypoint.sh"]
