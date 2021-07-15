@@ -60,7 +60,7 @@ class DirectorResource(Resource):
 
     @staticmethod
     def delete(director_id):
-        """Delete director by user_id"""
+        """Delete director by id"""
         director = Director.query.get_or_404(director_id)
         db.session.delete(director)
         db.session.commit()

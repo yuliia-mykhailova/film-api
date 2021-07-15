@@ -60,7 +60,7 @@ class UserResource(Resource):
 
     @staticmethod
     def delete(user_id):
-        """Delete user by user_id"""
+        """Delete user by id"""
         user = User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
