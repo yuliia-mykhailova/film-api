@@ -1,22 +1,17 @@
 from flask.cli import FlaskGroup
 
 from app import app, db
-from app.models import User
 
 
 cli = FlaskGroup(app)
+
+# from app import routes
 
 
 @cli.command("create_db")
 def create_db():
     db.drop_all()
     db.create_all()
-    db.session.commit()
-
-
-@cli.command("seed_db")
-def seed_db():
-    db.session.add(User(first_name='fff', last_name='ggg', email='michael@mherman.org', password='1234'))
     db.session.commit()
 
 
