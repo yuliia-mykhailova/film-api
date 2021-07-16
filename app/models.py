@@ -54,10 +54,12 @@ class Film(db.Model):
     name = db.Column(db.String(50), nullable=False)
     release_date = db.Column(db.DateTime, default=datetime.now())
     description = db.Column(db.Text, nullable=True)
-    rate = db.Column(db.Numeric(2, 2), nullable=False)
+    rate = db.Column(db.Integer, nullable=False)
     poster = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
-    user = db.relationship("User", backref="user_movies")
+    user = db.relationship("User", backref="user_films")
+    director_id = db.Column(db.Integer, db.ForeignKey("director.director_id"), nullable=True)
+    director = db.relationship("Director", backref="director_films")
     genres = db.relationship(
         "Genre", secondary=FilmGenre, backref="film_genre"
     )
