@@ -1,3 +1,5 @@
+"""Module for user resources"""
+
 from flask import request, jsonify
 from flask_restful import Resource
 from marshmallow import ValidationError
