@@ -68,15 +68,14 @@ class FilmListResource(Resource):
             films = films.filter(Film.name.ilike(f"%{search}%"))
 
         # Sorting
-        if sort_rate and sort_date:
-            if sort_rate == 'asc' and sort_date == 'asc':
-                films = films.order_by(Film.rate, Film.release_date)
-            elif sort_rate == 'desc' and sort_date == 'asc':
-                films = films.order_by(Film.rate.desc(), Film.release_date)
-            elif sort_rate == 'asc' and sort_date == 'desc':
-                films = films.order_by(Film.rate, Film.release_date.desc())
-            elif sort_rate == 'desc' and sort_date == 'desc':
-                films = films.order_by(Film.rate.desc(), Film.release_date.desc())
+        if sort_rate == 'asc' and sort_date == 'asc':
+            films = films.order_by(Film.rate, Film.release_date)
+        elif sort_rate == 'desc' and sort_date == 'asc':
+            films = films.order_by(Film.rate.desc(), Film.release_date)
+        elif sort_rate == 'asc' and sort_date == 'desc':
+            films = films.order_by(Film.rate, Film.release_date.desc())
+        elif sort_rate == 'desc' and sort_date == 'desc':
+            films = films.order_by(Film.rate.desc(), Film.release_date.desc())
 
         # Paginate and reformat
         films = films.paginate(page=page, per_page=ROWS_PER_PAGE)
