@@ -7,6 +7,7 @@ from app import db
 
 
 class User(db.Model, UserMixin):
+    """User model"""
     __tablename__ = "user"
 
     user_id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +26,7 @@ class User(db.Model, UserMixin):
 
 
 class Director(db.Model):
+    """Director model"""
     __tablename__ = "director"
 
     director_id = db.Column(db.Integer, primary_key=True)
@@ -36,6 +38,7 @@ class Director(db.Model):
 
 
 class Genre(db.Model):
+    """Genre model"""
     __tablename__ = "genre"
 
     genre_id = db.Column(db.Integer, primary_key=True)
@@ -53,6 +56,7 @@ FilmGenre = db.Table(
 
 
 class Film(db.Model):
+    """Film model"""
     __tablename__ = "film"
 
     film_id = db.Column(db.Integer, primary_key=True)

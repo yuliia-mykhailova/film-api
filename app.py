@@ -1,3 +1,5 @@
+"""Module for creating app and db"""
+
 from flask.cli import FlaskGroup
 
 from app import app, db
@@ -5,7 +7,7 @@ from app import app, db
 
 cli = FlaskGroup(app)
 
-# from app import routes
+from app import routes
 
 
 @cli.command("create_db")

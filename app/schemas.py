@@ -1,3 +1,5 @@
+"""Module for project schemas"""
+
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 from app.models import User, Director, Genre, Film
