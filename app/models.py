@@ -1,11 +1,12 @@
 """Module for project models"""
 
 from datetime import datetime
+from flask_login import UserMixin
 
 from app import db
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     user_id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +18,10 @@ class User(db.Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+
+    def get_id(self) -> int:
+        """Returns id of user"""
+        return self.user_id
 
 
 class Director(db.Model):
