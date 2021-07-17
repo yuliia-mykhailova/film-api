@@ -3,6 +3,7 @@
 from flask import request, jsonify
 from flask_restful import Resource
 from marshmallow import ValidationError
+from flask_login import current_user, login_required
 
 from app.models import Director, db
 from app.schemas import DirectorSchema
@@ -20,6 +21,7 @@ class DirectorListResource(Resource):
         return director_schema.dump(directors, many=True), 200
 
     @staticmethod
+    @login_required
     def post():
         """Add director"""
         try:
@@ -42,6 +44,7 @@ class DirectorResource(Resource):
         return director_schema.dump(director)
 
     @staticmethod
+    @login_required
     def put(director_id):
         """Update a director"""
 
@@ -61,6 +64,7 @@ class DirectorResource(Resource):
         return director_schema.dump(director), 200
 
     @staticmethod
+    @login_required
     def delete(director_id):
         """Delete director by id"""
         director = Director.query.get_or_404(director_id)

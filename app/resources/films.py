@@ -4,6 +4,7 @@ from flask import request, jsonify
 from flask_restful import Resource
 from marshmallow import ValidationError
 from sqlalchemy import desc
+from flask_login import current_user, login_required
 
 from app import db, app
 from app.models import Film, Director, Genre, User
@@ -43,6 +44,7 @@ class FilmListResource(Resource):
         return jsonify(film_list)
 
     @staticmethod
+    @login_required
     def post():
         """Add film"""
         data = request.json
@@ -76,6 +78,7 @@ class FilmResource(Resource):
         return film_schema.dump(film)
 
     @staticmethod
+    @login_required
     def put(film_id):
         """Update a film"""
 
@@ -103,6 +106,7 @@ class FilmResource(Resource):
         return film_schema.dump(film), 201
 
     @staticmethod
+    @login_required
     def delete(film_id) -> Resource:
         """Delete film by id"""
         film = Film.query.get_or_404(film_id)

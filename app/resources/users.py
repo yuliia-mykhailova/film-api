@@ -3,6 +3,7 @@
 from flask import request, jsonify
 from flask_restful import Resource
 from marshmallow import ValidationError
+from flask_login import current_user, login_required
 
 from app.models import User, db
 from app.schemas import UserSchema
@@ -42,6 +43,7 @@ class UserResource(Resource):
         return user_schema.dump(user)
 
     @staticmethod
+    @login_required
     def put(user_id):
         """Update a user"""
 
@@ -61,6 +63,7 @@ class UserResource(Resource):
         return user_schema.dump(user), 200
 
     @staticmethod
+    @login_required
     def delete(user_id):
         """Delete user by id"""
         user = User.query.get_or_404(user_id)
