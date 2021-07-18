@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api
 from flask_login import LoginManager
+from flask_swagger_ui import get_swaggerui_blueprint
 
 
 app = Flask(__name__)
@@ -16,6 +17,6 @@ login_manager.init_app(app)
 api = Api(app)
 
 
-@app.route("/")
-def hello_world():
-    return jsonify(hello="world")
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)

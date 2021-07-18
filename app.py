@@ -3,6 +3,7 @@
 from flask.cli import FlaskGroup
 
 from app import app, db
+from app.swagger import swaggerui_blueprint
 
 
 cli = FlaskGroup(app)
@@ -18,4 +19,5 @@ def create_db():
 
 
 if __name__ == "__main__":
+    app.register_blueprint(swaggerui_blueprint)
     cli()
