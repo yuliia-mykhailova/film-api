@@ -1,7 +1,10 @@
 """Module for project models"""
 
+import re
 from datetime import datetime
+
 from flask_login import UserMixin
+from sqlalchemy.orm import validates
 
 from app import db
 
@@ -23,6 +26,15 @@ class User(db.Model, UserMixin):
     def get_id(self) -> int:
         """Returns id of user"""
         return self.user_id
+
+    @validates('email')
+    def validate_email(self, key, email):
+        """Validate an email address"""
+        if not email:
+            raise AssertionError('No email address')
+        if not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
+            raise AssertionError('Wrong email address format')
+        return email
 
 
 class Director(db.Model):
@@ -75,3 +87,12 @@ class Film(db.Model):
     
     def __init__(self, **kwargs):
         super(Film, self).__init__(**kwargs)
+
+    @validates('rate')
+    def validate_email(self, key, rate):
+        """Validate rate of a film"""
+        if not rate:
+            raise AssertionError('No rate of film')
+        if rate < 0 or rate > 10:
+            raise AssertionError('Wrong rate format')
+        return rate
