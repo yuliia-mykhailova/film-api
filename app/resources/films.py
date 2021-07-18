@@ -11,6 +11,7 @@ from app.models import Film, Director, Genre, User
 from app.schemas import FilmSchema
 
 film_schema = FilmSchema()
+ROWS_PER_PAGE = 10
 
 
 class FilmListResource(Resource):
@@ -18,12 +19,72 @@ class FilmListResource(Resource):
 
     @staticmethod
     def get():
-        """Get films"""
-        films = Film.query.all()
+        """
+        Get films
+        Filter by: director, genre, year_from, year_to
+        Partial search by name
+        """
+        page = request.args.get('page', default=1, type=int)
+        director = request.args.get('director', type=str)
+        genre = request.args.get('genre', type=str)
+        year_from = request.args.get('year_from', type=str)
+        year_to = request.args.get('year_to', type=str)
+        search = request.args.get('search', type=str)
+        sort_rate = request.args.get('sort_rate', 'desc', type=str)
+        sort_date = request.args.get('sort_date', 'desc', type=str)
+
+        films = Film.query
+
+        # Filter by director
+        if director:
+            if director == 'unknown':
+                films = films.filter(Film.director_id.is_(None))
+            else:
+                searched_director = Director.query \
+                    .filter(Director.first_name.ilike(f"{director[:director.index(' ')]}")) \
+                    .filter(Director.last_name.ilike(f"{director[director.index(' ') + 1:]}")) \
+                    .first()
+                if not searched_director:
+                    return {"Error": "Wrong director name"}, 404
+                else:
+                    films = films.filter(Film.director == searched_director)
+
+        # Filter by genre
+        if genre:
+            searched_genre = Genre.query.filter(
+                Genre.name.ilike(f"{genre}")).first()
+            if not searched_genre:
+                return {"Error": "Wrong genre name"}, 404
+            else:
+                films = films.filter(Film.genres.contains(searched_genre))
+
+        # Filter by year_from, year_to
+        if year_from:
+            films = films.filter(Film.release_date >= f"{year_from}-01-01")
+        if year_to:
+            films = films.filter(Film.release_date <= f"{year_to}-12-31")
+
+        # Search by name of film
+        if search:
+            films = films.filter(Film.name.ilike(f"%{search}%"))
+
+        # Sorting
+        if sort_rate == 'asc' and sort_date == 'asc':
+            films = films.order_by(Film.rate, Film.release_date)
+        elif sort_rate == 'desc' and sort_date == 'asc':
+            films = films.order_by(Film.rate.desc(), Film.release_date)
+        elif sort_rate == 'asc' and sort_date == 'desc':
+            films = films.order_by(Film.rate, Film.release_date.desc())
+        elif sort_rate == 'desc' and sort_date == 'desc':
+            films = films.order_by(Film.rate.desc(), Film.release_date.desc())
+
+        # Paginate and reformat
+        films = films.paginate(page=page, per_page=ROWS_PER_PAGE)
+        paginated_films = films.items
         film_list = []
-        for film in films:
-            director = Director.query.filter_by(director_id=film.director_id).first()
-            if director is None:
+        for film in paginated_films:
+            # director = Director.query.filter(director_id=film.director_id).first()
+            if not film.director_id:
                 director = 'unknown'
             else:
                 director = film.director_id
@@ -41,7 +102,7 @@ class FilmListResource(Resource):
                 'user': film.user_id,
                 'film_genres': film_genre
             })
-        return jsonify(film_list)
+        return jsonify(200, film_list)
 
     @staticmethod
     @login_required
