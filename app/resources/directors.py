@@ -5,6 +5,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_login import current_user, login_required
 
+from app.admin_required import admin_required
 from app.models import Director, db
 from app.schemas import DirectorSchema
 
@@ -22,6 +23,7 @@ class DirectorListResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def post():
         """Add director"""
         try:
@@ -45,6 +47,7 @@ class DirectorResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def put(director_id):
         """Update a director"""
 
@@ -65,6 +68,7 @@ class DirectorResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def delete(director_id):
         """Delete director by id"""
         director = Director.query.get_or_404(director_id)

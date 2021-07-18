@@ -15,6 +15,7 @@ class UserListResource(Resource):
     """User list API"""
 
     @staticmethod
+    @login_required
     def get():
         """Get users"""
         users = db.session.query(User).all()
@@ -37,6 +38,7 @@ class UserResource(Resource):
     """User API"""
 
     @staticmethod
+    @login_required
     def get(user_id):
         """Get user by id"""
         user = User.query.get_or_404(user_id)
