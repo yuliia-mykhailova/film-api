@@ -30,8 +30,8 @@ class FilmListResource(Resource):
         year_from = request.args.get('year_from', type=str)
         year_to = request.args.get('year_to', type=str)
         search = request.args.get('search', type=str)
-        sort_rate = request.args.get('sort_rate', 'desc', type=str)
-        sort_date = request.args.get('sort_date', 'desc', type=str)
+        sort_rate = request.args.get('sort_rate', default='desc', type=str)
+        sort_date = request.args.get('sort_date', default='desc', type=str)
 
         films = Film.query
 
