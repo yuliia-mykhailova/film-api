@@ -144,36 +144,40 @@ class FilmResource(Resource):
         """Update a film"""
 
         film = Film.query.filter_by(film_id=film_id).first()
-        data = request.json
+        if current_user.user_id == film.user_id or current_user.is_admin:
+            data = request.json
 
-        if not film:
-            return {"Error": "Film was not found"}, 404
+            if not film:
+                return {"Error": "Film was not found"}, 404
 
-        film.user_id = data["user_id"]
-        film.rate = data["rate"]
-        film.description = data["description"]
-        film.name = data["name"]
-        film.poster = data["poster"]
-        film.release_date = data["release_date"]
-        film.director_id = data["director_id"]
-        for genre_id in data["genres"]:
-            film.genres.append(Genre.query.get_or_404(genre_id))
-        try:
-            db.session.add(film)
-            db.session.commit()
-        except ValidationError as error:
-            return {"Error": str(error)}, 400
+            film.user_id = data["user_id"]
+            film.rate = data["rate"]
+            film.description = data["description"]
+            film.name = data["name"]
+            film.poster = data["poster"]
+            film.release_date = data["release_date"]
+            film.director_id = data["director_id"]
+            for genre_id in data["genres"]:
+                film.genres.append(Genre.query.get_or_404(genre_id))
+            try:
+                db.session.add(film)
+                db.session.commit()
+            except ValidationError as error:
+                return {"Error": str(error)}, 400
 
-        return film_schema.dump(film), 201
+            return film_schema.dump(film), 201
+        return {"Error": "You don't have permission to do that"}, 403
 
     @staticmethod
     @login_required
-    def delete(film_id) -> Resource:
+    def delete(film_id):
         """Delete film by id"""
         film = Film.query.get_or_404(film_id)
-        db.session.delete(film)
-        db.session.commit()
-        return jsonify({
-            "status": 200,
-            "reason": "Film is deleted"
-        })
+        if current_user.user_id == film.user_id or current_user.is_admin:
+            db.session.delete(film)
+            db.session.commit()
+            return jsonify({
+                "status": 200,
+                "reason": "Film is deleted"
+            })
+        return {"Error": "You don't have permission to do that"}, 403
