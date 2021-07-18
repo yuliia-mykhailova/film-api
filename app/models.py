@@ -36,6 +36,15 @@ class User(db.Model, UserMixin):
             raise AssertionError('Wrong email address format')
         return email
 
+    @validates('password')
+    def validate_email(self, key, password):
+        """Validate an email address"""
+        if not password:
+            raise AssertionError('No password')
+        if len(password) < 6:
+            raise AssertionError('Too short password')
+        return password
+
 
 class Director(db.Model):
     """Director model"""
