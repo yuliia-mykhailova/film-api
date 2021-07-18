@@ -5,6 +5,7 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_login import current_user, login_required
 
+from app.admin_required import admin_required
 from app.models import Genre, db
 from app.schemas import GenreSchema
 
@@ -22,6 +23,7 @@ class GenreListResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def post():
         """Add genre"""
         try:
@@ -45,6 +47,7 @@ class GenreResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def put(genre_id):
         """Update a genre"""
 
@@ -65,6 +68,7 @@ class GenreResource(Resource):
 
     @staticmethod
     @login_required
+    @admin_required
     def delete(genre_id):
         """Delete genre by id"""
         genre = Genre.query.get_or_404(genre_id)
