@@ -10,6 +10,10 @@
   },
   "tags": [
         {
+          "name": "Login_logout",
+          "description": "API for login and logout"
+        },
+        {
           "name": "Users",
           "description": "API for User"
         },
@@ -44,13 +48,13 @@
                   }
                 },
                 "summary": "Get users",
-                "description": ":return: Response",
+                "description": "returns Users",
                 "tags": [
                     "Users"
                 ]
             },
       "post": {
-        "summary": "API Endpoint for create User",
+        "summary": "Creation User",
         "description": "Create new User in database",
         "tags": [
                     "Users"
@@ -66,7 +70,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "New user was Created"
           },
           "405": {
@@ -80,10 +84,10 @@
     },
     "/login": {
         "post": {
-          "summary": "API Endpoint for login  User",
-          "description": "For login user in system",
+          "summary": "Login for User",
+          "description": "Login user in system",
           "tags": [
-                      "Users"
+                      "Login_logout"
                   ],
           "parameters": [
             {
@@ -100,7 +104,7 @@
               "description": "Successful login"
             },
             "401": {
-              "description": "Email or Password Error"
+              "description": "Wrong Email or Password"
             }
           }
         }
@@ -113,13 +117,13 @@
                     }
                 },
                 "summary": "Get directors",
-                "description": ":return: Response",
+                "description": "returns directors",
                 "tags": [
                     "Directors"
                 ]
             },
             "post": {
-                "summary": "API Endpoint for creation Director only by admin",
+                "summary": "Creation of Director only by admin",
                 "description": "Create new Director by admin",
                 "tags": [
                             "Directors"
@@ -135,7 +139,7 @@
                   }
                 ],
                 "responses": {
-                  "200": {
+                  "201": {
                     "description": "New director was created"
                   },
                   "401": {
@@ -149,17 +153,14 @@
         },
     "/logout": {
         "post": {
-          "summary": "API Endpoint for logout  User",
-          "description": "For logout user from system",
+          "summary": "Logout for User",
+          "description": "Logout user out of system",
           "tags": [
-                      "Users"
+                      "Login_logout"
                   ],
           "responses": {
             "200": {
               "description": "Logout success"
-            },
-            "401": {
-                        "description": "Not authorized"
             }
           }
         }
@@ -189,7 +190,7 @@
                   }
                 },
                 "summary": "Delete director",
-                "description": ":param director_id: id of director\n:return: Response",
+                "description": ":param director_id: id of director",
                 "tags": [
                     "Directors"
                 ]
@@ -220,7 +221,7 @@
                     }
                 },
                 "summary": "Updates a director",
-                "description": ":param director_id: id of director\n:return: JSON",
+                "description": ":param director_id: id of director",
                 "tags": [
                     "Directors"
                 ]
@@ -235,7 +236,7 @@
                     }
                 },
                 "summary": "Get one director",
-                "description": ":param director_id: id of director\n:return: JSON",
+                "description": ":param director_id: id of director",
                 "tags": [
                     "Directors"
                 ]
@@ -249,13 +250,13 @@
                     }
                 },
                 "summary": "Get genres",
-                "description": ":return: JSON",
+                "description": "returns Genres",
                 "tags": [
                     "Genres"
                 ]
             },
             "post": {
-                "summary": "API Endpoint for create Genre by admin",
+                "summary": "Creation Genre by admin",
                 "description": "Create new Genre by admin",
                 "tags": [
                             "Genres"
@@ -308,7 +309,7 @@
                     }
                 },
                 "summary": "Delete genre",
-                "description": ":param genre_id: id of genre\n:return: Response",
+                "description": ":param genre_id: id of genre",
                 "tags": [
                     "Genres"
                 ]
@@ -339,7 +340,7 @@
                     }
                 },
                 "summary": "Updates a genre",
-                "description": ":param genre_id: id of genre\n:return: JSON",
+                "description": ":param genre_id: id of genre",
                 "tags": [
                     "Genres"
                 ]
@@ -354,7 +355,7 @@
                     }
                 },
                 "summary": "Get one genre",
-                "description": ":param genre_id: id of genre\n:return: JSON",
+                "description": ":param genre_id: id of genre",
                 "tags": [
                     "Genres"
                 ]
@@ -385,7 +386,7 @@
                     }
                 },
                 "summary": "Delete user",
-                "description": ":param user_id: id of user\n:return: Response",
+                "description": ":param user_id: id of user",
                 "tags": [
                     "Users"
                 ]
@@ -416,7 +417,7 @@
                     }
                 },
                 "summary": "Updates a user",
-                "description": ":param user_id: id of user\n:return: JSON",
+                "description": ":param user_id: id of user",
                 "tags": [
                     "Users"
                 ]
@@ -437,7 +438,7 @@
                     }
                 },
                 "summary": "Get one user",
-                "description": ":param user_id: id of user\n:return: JSON",
+                "description": ":param user_id: id of user",
                 "tags": [
                     "Users"
                 ]
@@ -447,12 +448,53 @@
             "get": {
                "parameters": [
                   {
-                    "name": "ordering_filtering_search",
-                    "description": "Get all films",
-                    "in": "path",
-                    "schema" : {
-
-                        }
+                    "in": "query",
+                    "name": "director",
+                    "required": false,
+                    "type": "string",
+                    "description": "Full name of director to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "genre",
+                    "required": false,
+                    "type": "string",
+                    "description": "Name of genre to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "year_from",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Released year from which to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "year_to",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Released year to which to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "search",
+                    "required": false,
+                    "type": "string",
+                    "description": "Full or partial name of film to find"
+                  },
+                 {
+                    "in": "query",
+                    "name": "sort_rate",
+                    "required": false,
+                    "type": "string",
+                    "description": "asc or desc order to sort rate of films"
+                  },
+                 {
+                    "in": "query",
+                    "name": "sort_year",
+                    "required": false,
+                    "type": "string",
+                    "description": "asc or desc order to sort released date of films"
                   }
                 ],
                 "responses": {
@@ -464,13 +506,13 @@
                   }
                 },
                 "summary": "Get films",
-                "description": ":return: JSON",
+                "description": "returns films",
                 "tags": [
                     "Films"
                 ]
             },
             "post": {
-                "summary": "API Endpoint for create film by user",
+                "summary": "Creation of film by user",
                 "description": "Create new film",
                 "tags": [
                             "Films"
@@ -478,7 +520,7 @@
                 "parameters": [
                   {
                     "name": "film",
-                    "description": "Film  params for adding",
+                    "description": "Film params for adding",
                     "in": "body",
                     "schema" : {
 
@@ -526,7 +568,7 @@
                     }
                 },
                 "summary": "Delete film",
-                "description": ":param film_id: id of film\n:return: Response",
+                "description": ":param film_id: id of film",
                 "tags": [
                     "Films"
                 ]
@@ -557,7 +599,7 @@
                     }
                 },
                 "summary": "Updates a film",
-                "description": ":param film_id: id of film\n:return: JSON",
+                "description": ":param film_id: id of film",
                 "tags": [
                     "Films"
                 ]
@@ -572,7 +614,7 @@
                     }
                 },
                 "summary": "Get one film",
-                "description": ":param film_id: id of film\n:return: JSON",
+                "description": ":param film_id: id of film",
                 "tags": [
                     "Films"
                 ]
