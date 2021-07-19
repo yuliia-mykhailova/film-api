@@ -21,14 +21,20 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
+        self.user_id = kwargs['user_id']
+        self.first_name = kwargs['first_name']
+        self.last_name = kwargs['last_name']
+        self.email = kwargs['email']
+        self.password = kwargs['password']
+        self.is_admin = kwargs['is_admin']
 
     def get_id(self) -> int:
         """Returns id of user"""
         return self.user_id
 
+    @staticmethod
     @validates('email')
-    def validate_email(self, key, email):
+    def validate_email(email):
         """Validate an email address"""
         if not email:
             raise AssertionError('No email address')
@@ -36,8 +42,9 @@ class User(db.Model, UserMixin):
             raise AssertionError('Wrong email address format')
         return email
 
+    @staticmethod
     @validates('password')
-    def validate_email(self, key, password):
+    def validate_email(password):
         """Validate an email address"""
         if not password:
             raise AssertionError('No password')
@@ -55,7 +62,9 @@ class Director(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
 
     def __init__(self, **kwargs):
-        super(Director, self).__init__(**kwargs)
+        self.director_id = kwargs['director_id']
+        self.first_name = kwargs['first_name']
+        self.last_name = kwargs['last_name']
 
 
 class Genre(db.Model):
@@ -66,7 +75,8 @@ class Genre(db.Model):
     name = db.Column(db.String(50), nullable=False)
 
     def __init__(self, **kwargs):
-        super(Genre, self).__init__(**kwargs)
+        self.genre_id = kwargs['genre_id']
+        self.name = kwargs['name']
 
 
 FilmGenre = db.Table(
@@ -90,15 +100,21 @@ class Film(db.Model):
     user = db.relationship("User", backref="user_films")
     director_id = db.Column(db.Integer, db.ForeignKey("director.director_id"), nullable=True)
     director = db.relationship("Director", backref="director_films")
-    genres = db.relationship(
-        "Genre", secondary=FilmGenre, backref="film_genre"
-    )
-    
-    def __init__(self, **kwargs):
-        super(Film, self).__init__(**kwargs)
+    genres = db.relationship("Genre", secondary=FilmGenre, backref="film_genre")
 
+    def __init__(self, **kwargs):
+        self.film_id = kwargs['film_id']
+        self.name = kwargs['name']
+        self.release_date = kwargs['release_date']
+        self.description = kwargs['description']
+        self.rate = kwargs['rate']
+        self.poster = kwargs['poster']
+        self.user_id = kwargs['user_id']
+        self.director_id = kwargs['director_id']
+
+    @staticmethod
     @validates('rate')
-    def validate_email(self, key, rate):
+    def validate_email(rate):
         """Validate rate of a film"""
         if not rate:
             raise AssertionError('No rate of film')

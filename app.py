@@ -3,16 +3,16 @@
 from flask.cli import FlaskGroup
 
 from app import app, db
+from app import routes
 from app.swagger import swaggerui_blueprint
 
 
 cli = FlaskGroup(app)
 
-from app import routes
-
 
 @cli.command("create_db")
 def create_db():
+    """Creation of database"""
     db.drop_all()
     db.create_all()
     db.session.commit()

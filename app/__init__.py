@@ -1,3 +1,5 @@
+"""Module for app initialization"""
+
 from flask import Flask, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -19,4 +21,5 @@ api = Api(app)
 
 @app.route('/static/<path:path>')
 def send_static(path):
+    """Swagger redirection"""
     return send_from_directory('static', path)

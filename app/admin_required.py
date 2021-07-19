@@ -3,7 +3,6 @@
 from functools import wraps
 
 from flask_login import current_user
-from flask import current_app
 
 
 def admin_required(func):

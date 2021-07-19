@@ -1,7 +1,5 @@
 """Module for login manager"""
 
-from flask_login import LoginManager
-
 from app.models import User
 from app import login_manager
 
