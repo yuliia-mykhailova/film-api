@@ -444,7 +444,7 @@
                 ]
             }
         },
-    "/films": {
+"/films":{
             "get": {
                "parameters": [
                   {
@@ -495,6 +495,13 @@
                     "required": false,
                     "type": "string",
                     "description": "asc or desc order to sort released date of films"
+                  },
+                 {
+                    "in": "query",
+                    "name": "page",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Number of page with films"
                   }
                 ],
                 "responses": {
