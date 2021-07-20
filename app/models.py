@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
         return self.user_id
 
     @validates('email')
-    def validate_email(self, email):
+    def validate_email(self, key, email):
         """Validate an email address"""
         if not email:
             raise AssertionError('No email address')
@@ -37,7 +37,7 @@ class User(db.Model, UserMixin):
         return email
 
     @validates('password')
-    def validate_email(self, password):
+    def validate_email(self, key, password):
         """Validate an email address"""
         if not password:
             raise AssertionError('No password')
@@ -96,7 +96,7 @@ class Film(db.Model):
         super(Film, self).__init__(**kwargs)
 
     @validates('rate')
-    def validate_email(self, rate):
+    def validate_email(self, key,  rate):
         """Validate rate of a film"""
         if not rate:
             raise AssertionError('No rate of film')

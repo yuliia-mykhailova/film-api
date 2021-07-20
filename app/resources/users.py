@@ -6,7 +6,8 @@ from marshmallow import ValidationError
 from flask_login import current_user, login_required
 
 from app.admin_required import admin_required
-from app.models import User, db
+from app.models import User
+from app import app, db
 from app.schemas import UserSchema
 
 user_schema = UserSchema()
@@ -21,6 +22,7 @@ class UserListResource(Resource):
     def get():
         """Get users"""
         users = db.session.query(User).all()
+        app.logger.info("Get all users")
         return user_schema.dump(users, many=True), 200
 
     @staticmethod
@@ -33,6 +35,7 @@ class UserListResource(Resource):
 
         db.session.add(user)
         db.session.commit()
+        app.logger.info(f"Added user id: {user.user_id} by user with id: {current_user.get_id()}")
         return user_schema.dump(user), 201
 
 
@@ -45,6 +48,7 @@ class UserResource(Resource):
         """Get user by id"""
         if current_user.user_id == user_id or current_user.is_admin:
             user = User.query.get_or_404(user_id)
+            app.logger.info(f"Get user id: {user_id} by user with id: {current_user.get_id()}")
             return user_schema.dump(user)
         return {"Error": "You don't have permission to do that"}, 403
 
@@ -66,6 +70,7 @@ class UserResource(Resource):
 
             db.session.add(user)
             db.session.commit()
+            app.logger.info(f"Updated user id: {user_id} by user with id: {current_user.get_id()}")
             return user_schema.dump(user), 200
         return {"Error": "You don't have permission to do that"}, 403
 
@@ -77,6 +82,7 @@ class UserResource(Resource):
             user = User.query.get_or_404(user_id)
             db.session.delete(user)
             db.session.commit()
+            app.logger.info(f"Deleted user id: {user_id} by user with id: {current_user.get_id()}")
             return jsonify({
                 "status": 200,
                 "reason": "User is deleted"

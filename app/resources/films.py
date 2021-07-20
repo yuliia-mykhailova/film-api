@@ -102,6 +102,7 @@ class FilmListResource(Resource):
                 'user': film.user_id,
                 'film_genres': film_genre
             })
+        app.logger.info(f"Get all films")
         return jsonify(200, film_list)
 
     @staticmethod
@@ -111,7 +112,7 @@ class FilmListResource(Resource):
         data = request.json
         film = Film()
 
-        film.user_id = data["user_id"]
+        film.user_id = current_user.get_id()
         film.rate = data["rate"]
         film.description = data["description"]
         film.name = data["name"]
@@ -125,7 +126,7 @@ class FilmListResource(Resource):
             db.session.commit()
         except ValidationError as error:
             return {"Error": str(error)}, 400
-
+        app.logger.info(f"Added film id: {film.film_id} by user with id: {current_user.get_id()}")
         return film_schema.dump(film), 201
 
 
@@ -136,6 +137,7 @@ class FilmResource(Resource):
     def get(film_id):
         """Get film by id"""
         film = Film.query.get_or_404(film_id)
+        app.logger.info(f"Get film id: {film_id} by user with id: {current_user.get_id()}")
         return film_schema.dump(film)
 
     @staticmethod
@@ -164,7 +166,7 @@ class FilmResource(Resource):
                 db.session.commit()
             except ValidationError as error:
                 return {"Error": str(error)}, 400
-
+            app.logger.info(f"Updated film id: {film_id} by user with id: {current_user.get_id()}")
             return film_schema.dump(film), 201
         return {"Error": "You don't have permission to do that"}, 403
 
@@ -176,6 +178,7 @@ class FilmResource(Resource):
         if current_user.user_id == film.user_id or current_user.is_admin:
             db.session.delete(film)
             db.session.commit()
+            app.logger.info(f"Deleted film id: {film_id} by user with id: {current_user.get_id()}")
             return jsonify({
                 "status": 200,
                 "reason": "Film is deleted"

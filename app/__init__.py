@@ -1,6 +1,7 @@
 """Module for app initialization"""
 
-from flask import Flask, jsonify, send_from_directory
+import logging
+from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import Api
@@ -17,6 +18,8 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 app.register_blueprint(swaggerui_blueprint)
 login_manager.init_app(app)
+logging.basicConfig(level=logging.INFO, filename="film_api.log", filemode="a",
+                    format='%(asctime)s:%(levelname)s:%(message)s')
 
 
 api = Api(app)

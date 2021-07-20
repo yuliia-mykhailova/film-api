@@ -5,8 +5,9 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_login import current_user, login_required
 
+from app import app, db
 from app.admin_required import admin_required
-from app.models import Director, db
+from app.models import Director
 from app.schemas import DirectorSchema
 
 director_schema = DirectorSchema()
@@ -19,6 +20,7 @@ class DirectorListResource(Resource):
     def get():
         """Get directors"""
         directors = db.session.query(Director).all()
+        app.logger.info(f"Get all directors")
         return director_schema.dump(directors, many=True), 200
 
     @staticmethod
@@ -33,6 +35,7 @@ class DirectorListResource(Resource):
 
         db.session.add(director)
         db.session.commit()
+        app.logger.info(f"Added director id: {director.director_id} by user with id: {current_user.get_id()}")
         return director_schema.dump(director), 201
 
 
@@ -43,6 +46,7 @@ class DirectorResource(Resource):
     def get(director_id):
         """Get director by id"""
         director = Director.query.get_or_404(director_id)
+        app.logger.info(f"Get director id: {director.director_id} by user with id: {current_user.get_id()}")
         return director_schema.dump(director)
 
     @staticmethod
@@ -64,6 +68,7 @@ class DirectorResource(Resource):
 
         db.session.add(director)
         db.session.commit()
+        app.logger.info(f"Updated director id: {director.director_id} by user with id: {current_user.get_id()}")
         return director_schema.dump(director), 200
 
     @staticmethod
@@ -74,6 +79,7 @@ class DirectorResource(Resource):
         director = Director.query.get_or_404(director_id)
         db.session.delete(director)
         db.session.commit()
+        app.logger.info(f"Deleted director id: {director.director_id} by user with id: {current_user.get_id()}")
         return jsonify({
             "status": 200,
             "reason": "Director is deleted"

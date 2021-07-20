@@ -5,8 +5,9 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from flask_login import current_user, login_required
 
+from app import app, db
 from app.admin_required import admin_required
-from app.models import Genre, db
+from app.models import Genre
 from app.schemas import GenreSchema
 
 genre_schema = GenreSchema()
@@ -19,6 +20,7 @@ class GenreListResource(Resource):
     def get():
         """Get genres"""
         genres = db.session.query(Genre).all()
+        app.logger.info(f"Get all genres")
         return genre_schema.dump(genres, many=True), 200
 
     @staticmethod
@@ -33,6 +35,7 @@ class GenreListResource(Resource):
 
         db.session.add(genre)
         db.session.commit()
+        app.logger.info(f"Added genre id: {genre.genre_id} by user with id: {current_user.get_id()}")
         return genre_schema.dump(genre), 201
 
 
@@ -43,6 +46,7 @@ class GenreResource(Resource):
     def get(genre_id):
         """Get genre by id"""
         genre = Genre.query.get_or_404(genre_id)
+        app.logger.info(f"Get genre id: {genre_id} by user with id: {current_user.get_id()}")
         return genre_schema.dump(genre)
 
     @staticmethod
@@ -64,6 +68,7 @@ class GenreResource(Resource):
 
         db.session.add(genre)
         db.session.commit()
+        app.logger.info(f"Updated genre id: {genre_id} by user with id: {current_user.get_id()}")
         return genre_schema.dump(genre), 200
 
     @staticmethod
@@ -74,6 +79,7 @@ class GenreResource(Resource):
         genre = Genre.query.get_or_404(genre_id)
         db.session.delete(genre)
         db.session.commit()
+        app.logger.info(f"Deleted genre id: {genre_id} by user with id: {current_user.get_id()}")
         return jsonify({
             "status": 200,
             "reason": "Genre is deleted"
