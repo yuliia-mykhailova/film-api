@@ -24,6 +24,8 @@ logging.basicConfig(level=logging.INFO, filename="film_api.log", filemode="a",
 
 api = Api(app)
 
+from app import routes
+
 
 @app.route('/static/<path:path>')
 def send_static(path):

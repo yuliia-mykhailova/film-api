@@ -11,6 +11,7 @@ RUN pip install -r /usr/src/app/requirements.txt
 
 COPY app.py .
 COPY /app /app
+COPY /tests /tests
 COPY entrypoint.sh .
 
 ENTRYPOINT ["/usr/src/entrypoint.sh"]
