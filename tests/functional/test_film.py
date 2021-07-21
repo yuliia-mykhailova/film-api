@@ -1,42 +1,45 @@
-"""Testing module for film"""
+"""Module for film testing"""
 
 import requests
-from flask import json
-import pytest
-from app import app
 
 
 def test_film_get():
+    """Test get films"""
     url = "http://0.0.0.0:5000/films"
     response = requests.get(url)
     assert response.status_code == 200
 
 
 def test_err_get_film_id():
+    """Test get film by id"""
     url = "http://0.0.0.0:5000/films/15"
     response = requests.get(url)
     assert response.status_code == 404
 
 
 def test_film_search():
+    """Test get films with search by name"""
     url = "http://0.0.0.0:5000/films?search=bat"
     response = requests.get(url)
     assert response.status_code == 200
 
 
 def test_film_filter_genre():
+    """Test get films by genre"""
     url = "http://0.0.0.0:5000/films?genre=horror"
     response = requests.get(url)
     assert response.status_code == 404
 
 
 def test_film_filter_years_release():
+    """Test get films between release years"""
     url = "http://0.0.0.0:5000/films?year_from=1999&year_to=2020"
     response = requests.get(url)
     assert response.status_code == 200
 
 
 def test_film_filter_director():
+    """Test get films by director"""
     url = "http://0.0.0.0:5000/films?director=Christopher%20Nolan"
     response = requests.get(url)
     assert response.status_code == 404

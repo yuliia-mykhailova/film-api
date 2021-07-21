@@ -1,9 +1,10 @@
-"""Test model Genre"""
+"""Module for genre testing"""
 
 import requests
 
 
 def test_genre():
+    """Test get genres"""
     url = "http://0.0.0.0:5000/genres"
 
     response = requests.get(url)

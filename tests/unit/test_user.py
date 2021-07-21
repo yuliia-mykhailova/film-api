@@ -1,4 +1,4 @@
-"""Test model User"""
+"""Module for user testing"""
 
 import requests
 

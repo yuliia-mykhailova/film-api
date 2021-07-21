@@ -1,6 +1,6 @@
-"""Module for testing login, signup, logout"""
+"""Module for testing login, logout"""
+
 import requests
-from flask import json
 import pytest
 from app import app
 
@@ -12,6 +12,7 @@ def client():
 
 
 def test_create():
+    """Test for creating user"""
     url = "http://0.0.0.0:5000/users"
 
     response = requests.post(url,
@@ -25,6 +26,7 @@ def test_create():
 
 
 def test_login():
+    """Test for login"""
     url = "http://0.0.0.0:5000/login"
 
     response = requests.post(url,
@@ -36,6 +38,7 @@ def test_login():
 
 
 def test_logout(client):
+    """Test for logout"""
     url = "http://0.0.0.0:5000/logout"
     response = client.post(url)
     assert response.status_code == 200
