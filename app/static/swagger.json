@@ -1,0 +1,632 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Film-API",
+    "contact": {
+      "name": "Yuliia Mykhailova",
+      "email": "yuliia.mykhailova.work@gmail.com"
+    }
+  },
+  "tags": [
+        {
+          "name": "Login_logout",
+          "description": "API for login and logout"
+        },
+        {
+          "name": "Users",
+          "description": "API for User"
+        },
+        {
+          "name": "Directors",
+          "description": "API for Directors"
+        },
+        {
+          "name": "Genres",
+          "description": "API for Genre"
+        },
+        {
+          "name": "Films",
+          "description": "API for Film"
+        }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                  "401": {
+                    "description": "User is not authorized"
+                  },
+                  "403": {
+                    "description": "Access is forbidden"
+                  }
+                },
+                "summary": "Get users",
+                "description": "returns Users",
+                "tags": [
+                    "Users"
+                ]
+            },
+      "post": {
+        "summary": "Creation User",
+        "description": "Create new User in database",
+        "tags": [
+                    "Users"
+                ],
+        "parameters": [
+          {
+            "name": "user",
+            "description": "User params to register new user",
+            "in": "body",
+            "schema" : {
+
+                }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "New user was Created"
+          },
+          "405": {
+            "description": "This data already exists"
+          },
+          "400": {
+            "description": "Incorrect data"
+          }
+        }
+      }
+    },
+    "/login": {
+        "post": {
+          "summary": "Login for User",
+          "description": "Login user in system",
+          "tags": [
+                      "Login_logout"
+                  ],
+          "parameters": [
+            {
+              "name": "user",
+              "description": "User enters email and password",
+              "in": "body",
+              "schema" : {
+
+                  }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful login"
+            },
+            "401": {
+              "description": "Wrong Email or Password"
+            }
+          }
+        }
+    },
+     "/directors": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get directors",
+                "description": "returns directors",
+                "tags": [
+                    "Directors"
+                ]
+            },
+            "post": {
+                "summary": "Creation of Director only by admin",
+                "description": "Create new Director by admin",
+                "tags": [
+                            "Directors"
+                        ],
+                "parameters": [
+                  {
+                    "name": "director",
+                    "description": "Director params for director",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                  "201": {
+                    "description": "New director was created"
+                  },
+                  "401": {
+                    "description": "User is not authorized"
+                  },
+                  "403": {
+                    "description": "Access is forbidden"
+                  }
+                }
+            }
+        },
+    "/logout": {
+        "post": {
+          "summary": "Logout for User",
+          "description": "Logout user out of system",
+          "tags": [
+                      "Login_logout"
+                  ],
+          "responses": {
+            "200": {
+              "description": "Logout success"
+            }
+          }
+        }
+    },
+    "/directors/{director_id}": {
+            "parameters": [
+                {
+                    "name": "director_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                    "description": "User is not authorized"
+                  },
+                  "403": {
+                    "description": "Access is forbidden"
+                  }
+                },
+                "summary": "Delete director",
+                "description": ":param director_id: id of director",
+                "tags": [
+                    "Directors"
+                ]
+            },
+            "put": {
+              "parameters": [
+                  {
+                    "name": "director",
+                    "description": "Director params for director",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                    "200": {
+                      "description": "Success"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    }
+                },
+                "summary": "Updates a director",
+                "description": ":param director_id: id of director",
+                "tags": [
+                    "Directors"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "summary": "Get one director",
+                "description": ":param director_id: id of director",
+                "tags": [
+                    "Directors"
+                ]
+            }
+        },
+         "/genres": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get genres",
+                "description": "returns Genres",
+                "tags": [
+                    "Genres"
+                ]
+            },
+            "post": {
+                "summary": "Creation Genre by admin",
+                "description": "Create new Genre by admin",
+                "tags": [
+                            "Genres"
+                        ],
+                "parameters": [
+                  {
+                    "name": "genre",
+                    "description": "Genre params for creating",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "New genre was created"
+                  },
+                  "401": {
+                      "description": "User is not authorized"
+                  },
+                  "403": {
+                      "description": "Access is forbidden"
+                  }
+                }
+            }
+        },
+    "/genres/{genre_id}": {
+            "parameters": [
+                {
+                    "name": "genre_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    }
+                },
+                "summary": "Delete genre",
+                "description": ":param genre_id: id of genre",
+                "tags": [
+                    "Genres"
+                ]
+            },
+            "put": {
+              "parameters": [
+                  {
+                    "name": "genre",
+                    "description": "Genre params for updating",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    }
+                },
+                "summary": "Updates a genre",
+                "description": ":param genre_id: id of genre",
+                "tags": [
+                    "Genres"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Get one genre",
+                "description": ":param genre_id: id of genre",
+                "tags": [
+                    "Genres"
+                ]
+            }
+        },
+    "/users/{user_id}": {
+            "parameters": [
+                {
+                    "name": "user_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Delete user",
+                "description": ":param user_id: id of user",
+                "tags": [
+                    "Users"
+                ]
+            },
+            "put": {
+              "parameters": [
+                  {
+                    "name": "user",
+                    "description": "User params for updating",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    }
+                },
+                "summary": "Updates a user",
+                "description": ":param user_id: id of user",
+                "tags": [
+                    "Users"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Get one user",
+                "description": ":param user_id: id of user",
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+"/films":{
+            "get": {
+               "parameters": [
+                  {
+                    "in": "query",
+                    "name": "director",
+                    "required": false,
+                    "type": "string",
+                    "description": "Full name of director to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "genre",
+                    "required": false,
+                    "type": "string",
+                    "description": "Name of genre to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "year_from",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Released year from which to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "year_to",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Released year to which to find film"
+                  },
+                 {
+                    "in": "query",
+                    "name": "search",
+                    "required": false,
+                    "type": "string",
+                    "description": "Full or partial name of film to find"
+                  },
+                 {
+                    "in": "query",
+                    "name": "sort_rate",
+                    "required": false,
+                    "type": "string",
+                    "description": "asc or desc order to sort rate of films"
+                  },
+                 {
+                    "in": "query",
+                    "name": "sort_year",
+                    "required": false,
+                    "type": "string",
+                    "description": "asc or desc order to sort released date of films"
+                  },
+                 {
+                    "in": "query",
+                    "name": "page",
+                    "required": false,
+                    "type": "integer",
+                    "description": "Number of page with films"
+                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                  "404": {
+                    "description": "Not found"
+                  }
+                },
+                "summary": "Get films",
+                "description": "returns films",
+                "tags": [
+                    "Films"
+                ]
+            },
+            "post": {
+                "summary": "Creation of film by user",
+                "description": "Create new film",
+                "tags": [
+                            "Films"
+                        ],
+                "parameters": [
+                  {
+                    "name": "film",
+                    "description": "Film params for adding",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "New film has added"
+                  },
+                  "400": {
+                    "description": "Error. Incorrect data"
+                  },
+                  "401": {
+                      "description": "User is not authorized"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                }
+            }
+        },
+    "/films/{film_id}": {
+            "parameters": [
+                {
+                    "name": "film_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Film was deleted"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Delete film",
+                "description": ":param film_id: id of film",
+                "tags": [
+                    "Films"
+                ]
+            },
+            "put": {
+              "parameters": [
+                  {
+                    "name": "film",
+                    "description": "Film params for updating",
+                    "in": "body",
+                    "schema" : {
+
+                        }
+                  }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "401": {
+                      "description": "User is not authorized"
+                    },
+                    "403": {
+                      "description": "Access is forbidden"
+                    },
+                    "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Updates a film",
+                "description": ":param film_id: id of film",
+                "tags": [
+                    "Films"
+                ]
+            },
+            "get": {
+                "responses": {
+                  "200": {
+                        "description": "Success"
+                    },
+                  "404": {
+                      "description": "Not found"
+                    }
+                },
+                "summary": "Get one film",
+                "description": ":param film_id: id of film",
+                "tags": [
+                    "Films"
+                ]
+            }
+        }
+
+  }
+}
